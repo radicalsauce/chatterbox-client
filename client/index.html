@@ -10,61 +10,65 @@
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!-- your scripts -->
-    <script src="scripts/config.js"></script>
     <script src="scripts/humane.js"></script>
+    <script src="scripts/config.js"></script>
     <script src="scripts/app.js"></script>
   </head>
 
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">ChatterBox</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#">User Name</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chat rooms<span class="caret"></span></a>
-          <ul class="dropdown-menu" id="roomSelect" role="menu">
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
   <body>
-    <div class="container" id="main">
-
-      <!-- Your HTML goes here! -->
-      <form role="form">
-        <div class="form-group">
-          <label for="text">Message</label>
-          <input type="text" class="form-control" id="text" placeholder="your message">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      <p>&nbsp;</p>
-      <h2>Messages:</h2>
-
-      <div class="well">
-        <ul class="list-group" id="chats">
-
-        </ul>
-
-
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">ChatterBox</a>
       </div>
 
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#" id="myUser"></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chat Rooms<span class="caret"></span></a>
+            <ul class="dropdown-menu" id="roomSelect" role="menu">
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends<span class="caret"></span></a>
+            <ul class="dropdown-menu" id="friendsSelect" role="menu">
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
 
-    </div>
-  </body>
+      <div class="container" id="main">
+
+        <!-- Your HTML goes here! -->
+        <form role="form">
+          <div class="form-group">
+            <label for="text">Message</label>
+            <input type="text" class="form-control" id="text" placeholder="your message">
+          </div>
+          <button type="button" class="btn btn-default">Submit</button>
+        </form>
+        <p>&nbsp;</p>
+        <h2>Messages:</h2>
+
+        <div class="well">
+          <ul class="list-group" id="chats">
+
+          </ul>
+
+
+        </div>
+
+      </div>
+    </body>
 </html>

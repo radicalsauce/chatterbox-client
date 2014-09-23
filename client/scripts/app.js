@@ -6,15 +6,14 @@ var app = {
   currentUser: '',
   currentRoom: '',
 
-  init: function(){},
+  init: function(){
+    app.myUser = window.location.search.substring(1).split("=")[1];
+    app.currentRoom = 'lobby';
+    console.log(app.myUser);
+    $("#myUser").html(app.myUser);
+  },
 
-  send: function(){
-
-    var message = {
-      username: 'anon',
-      text: 'Why HELLO Andrew',
-      roomname: 'theROOM'
-    };
+  send: function(message){
 
     $.ajax({
       // always use this url
@@ -49,17 +48,28 @@ var app = {
       },
       success: function (data) {
         app.clearMessages();
-        console.log(data);
         for(var i = 0; i < data["results"].length; i++){
-          var user = data["results"][i]["username"];
-          var message = data["results"][i]["text"];
+          var user = app.sanitize(data["results"][i]["username"]);
+          var message = app.sanitize(data["results"][i]["text"]);
           var date = data["results"][i]["createdAt"];
-          var roomname = data["results"][i]["roomname"];
+          var roomname = app.sanitize(data["results"][i]["roomname"]);
 
           app.addRoom(roomname);
-
-          if(data["results"][i]["username"] === 'anon' || data["results"][i]["username"] === 'person'){
-            $("#chats").append("<li class='list-group-item'><a href='#' class='friend' style='font-weight: bold'>" + user + "</a>" + ": " + message + "<div class='text-right'>" + humaneDate(date) + "</div>");
+          if (roomname === app.currentRoom) {
+          // if(data["results"][i]["username"] === 'anonymous' || data["results"][i]["username"] === 'person'){
+             $("#chats").append("<li class='list-group-item'><a href='#' class='username' style='font-weight: bold'>" + user + "</a>" + ": " + message + "<div class='text-right'>" + humaneDate(date) + "</div>");
+            // var $li = $("<li>");
+            // $li.addClass("list-group-item");
+            // var $date = $("<div>").text(humaneDate(date));
+            // $date.addClass("text-right");
+            // var $usr = $("<a href'#'>").text(user);
+            // $usr.addClass("username");
+            // var $msg = $("<div >").text(message);
+            // $li.append($usr);
+            // $li.append($date);
+            // $li.append($msg);
+            // $("#chats").append($li);
+          // // }
           }
         }
         app.clickEventHandler();
@@ -71,14 +81,8 @@ var app = {
     });
   },
 
-  addMessage: function(data){
-
-    var user = data["username"];
-    var message = ["text"];
-    var date = new Date();
-    var roomname = data["roomname"];
-
-    $("#chats").append("<li class='list-group-item'><a href='#' class='friend' style='font-weight: bold'>" + user + "</a>" + ": " + message + "<div class='text-right'>" + humaneDate(date) + "</div>");
+  addMessage: function(message){
+    app.send(message);
   },
 
   clearMessages: function(){
@@ -89,36 +93,58 @@ var app = {
   addRoom: function(roomname){
     if (this.rooms.indexOf(roomname) === -1) {
       this.rooms.push(roomname);
-      // $("#roomSelect").append("<li> <a href='#' class="+roomname.split(' ').join()+"Class>"+roomname+"</a>");
-      $("#roomSelect").append("<li> <a href='#' class="+roomname+"Class>"+roomname+"</a>");
-
+      $("#roomSelect").append("<li> <a href='#' class='room'>"+roomname+"</a>");
     }
 
     return this.rooms;
   },
 
   addFriend: function(friend) {
-    if (this.rooms.indexOf(friend) === -1) {
+    if (this.friends.indexOf(friend) === -1) {
       this.friends.push(friend);
+      $("#friendsSelect").append("<li> <a href='#' class='friend'>"+friend+"</a>");
+
     }
   },
 
   clickEventHandler: function() {
-    $("#chats li a").on("click", function() {
+    $("#main .username").on("click", function() {
       console.log("clickity");
-      console.log(this);
       app.addFriend($(this).html());
     });
+
+    $(".room").on("click", function() {
+      app.currentRoom = $(this).html();
+      console.log(app.currentRoom);
+
+    });
+  },
+
+  sanitize: function(value){
+    var html = value;
+    var div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
   }
 
 };
 
 
+
+
 $(document).ready(function(){
 
-  // setInterval(function(){
+  app.init();
 
-
+  $(".btn").on("click", function() {
+    var text = $("#text").val();
+    var message = {
+      username: app.myUser,
+      text: text,
+      roomname: app.currentRoom
+    };
+    app.addMessage(message);
+  });
   setInterval(function(){app.fetch('https://api.parse.com/1/classes/chatterbox')}, 2000);
 });
 
