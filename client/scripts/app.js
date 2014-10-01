@@ -17,7 +17,7 @@ var app = {
 
     $.ajax({
       // always use this url
-      url: 'https://api.parse.com/1/classes/chatterbox',
+      url: 'http://127.0.0.1:3000/classes/messages',
       type: 'POST',
       data: JSON.stringify(message),
       dataType: 'JSON',
@@ -43,10 +43,8 @@ var app = {
         order: "-createdAt"
       },
       contentType: 'application/json',
-      beforeSend: function (data) {
-        console.log('chatterbox: Message got:');
-      },
       success: function (data) {
+        console.log(data);
         app.clearMessages();
         for(var i = 0; i < data["results"].length; i++){
           var user = app.sanitize(data["results"][i]["username"]);
@@ -56,20 +54,7 @@ var app = {
 
           app.addRoom(roomname);
           if (roomname === app.currentRoom) {
-          // if(data["results"][i]["username"] === 'anonymous' || data["results"][i]["username"] === 'person'){
              $("#chats").append("<li class='list-group-item'><a href='#' class='username' style='font-weight: bold'>" + user + "</a>" + ": " + message + "<div class='text-right'>" + humaneDate(date) + "</div>");
-            // var $li = $("<li>");
-            // $li.addClass("list-group-item");
-            // var $date = $("<div>").text(humaneDate(date));
-            // $date.addClass("text-right");
-            // var $usr = $("<a href'#'>").text(user);
-            // $usr.addClass("username");
-            // var $msg = $("<div >").text(message);
-            // $li.append($usr);
-            // $li.append($date);
-            // $li.append($msg);
-            // $("#chats").append($li);
-          // // }
           }
         }
         app.clickEventHandler();
@@ -136,7 +121,8 @@ $(document).ready(function(){
 
   app.init();
 
-  $(".btn").on("click", function() {
+  $('#send').submit(function(e){
+    e.preventDefault();
     var text = $("#text").val();
     var message = {
       username: app.myUser,
@@ -145,7 +131,8 @@ $(document).ready(function(){
     };
     app.addMessage(message);
   });
-  setInterval(function(){app.fetch('https://api.parse.com/1/classes/chatterbox')}, 2000);
+
+  setInterval(function(){app.fetch('http://127.0.0.1:3000/classes/messages')}, 2000);
 });
 
 
